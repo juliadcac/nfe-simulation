@@ -10,13 +10,13 @@ public class ProductService {
 
     @Transactional
     public Product save(ProductDTO dto) {
-        Product produto = new Product();
-        produto.code = dto.code;
-        produto.name = dto.name;
-        produto.ncm = dto.ncm;
-        produto.cfop = dto.cfop;
-        produto.unitValue = dto.unitValue;
-        produto.persist();
-        return produto;
+        Product product = new Product();
+        product.code = dto.code;
+        product.name = dto.name;
+        product.ncm = dto.ncm;
+        product.cfop = dto.cfop;
+        product.unitValue = dto.unitValue;
+        product.persist();
+        return product;
     }
 }

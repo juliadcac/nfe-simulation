@@ -28,4 +28,6 @@ public class ProductDTO {
     @NotNull
     @DecimalMin(value = "0.01", message = "O valor deve ser maior que zero")
     public BigDecimal unitValue;
+
+
 }
