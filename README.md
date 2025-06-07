@@ -1,63 +1,180 @@
-# com.seuprojeto.nfe.nfe-simulation
+# nfe-simulation
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+Projeto desenvolvido com **Quarkus** para simular o processo de **emissão de Nota Fiscal Eletrônica**. Inclui cadastros de emitentes, produtos e emissão de NF-e com validações fiscais, geração de XML simulado e protocolo fictício.
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+---
 
-## Running the application in dev mode
+## 🛠 Tecnologias utilizadas
 
-You can run your application in dev mode that enables live coding using:
+- Java 17+
+- Quarkus 3.x
+- Jakarta REST (JAX-RS)
+- Hibernate ORM com Panache
+- Bean Validation
+- OpenAPI (Swagger)
+- Banco H2 (modo memória, padrão)
+- JUnit 5 para testes
 
-```shell script
+---
+
+## 🚀 Como executar o projeto
+
+### 1. Clonar o repositório
+
+```bash
+git clone https://github.com/juliadcac/nfe-simulation.git
+cd nfe-simulation
+```
+
+### 2. Executar em modo desenvolvimento
+
+```bash
 ./mvnw quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
+O Quarkus iniciará a aplicação com *hot reload* disponível em:  
+📍 `http://localhost:8080`
 
-## Packaging and running the application
+---
 
-The application can be packaged using:
+## 📄 Documentação da API (Swagger UI)
 
-```shell script
-./mvnw package
+Você pode visualizar e testar todos os endpoints da API através da interface Swagger:
+
+🔗 **http://localhost:8080/swagger-ui**
+
+Se a tela mostrar erro 404 no topo, é apenas da tentativa de carregar uma especificação OpenAPI externa. Isso não afeta o uso da interface.
+
+---
+
+## 🔧 Exemplos de Requisições
+
+### ▶️ Cadastrar Emitente
+
+`POST /emitters`
+
+```json
+{
+  "cnpj": "12345678000195",
+  "companyName": "Empresa Exemplo",
+  "ie": "12345678",
+  "uf": "SC"
+}
 ```
 
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+### ▶️ Cadastrar Produto
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+`POST /products`
 
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+```json
+{
+  "code": "P001",
+  "name": "Produto Exemplo",
+  "cfop": "5102",
+  "ncm": "12345678",
+  "unitValue": 150.00
+}
 ```
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+### ▶️ Emitir NF-e (simulação simples)
 
-## Creating a native executable
+`POST /nfe`
 
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
+```json
+{
+  "emitterCNPJ": "12345678000195",
+  "recipientCnpjCpf": "98765432100",
+  "recipientName": "Cliente Teste",
+  "recipientUF": "SP",
+  "items": [
+    {
+      "productCode": "P001",
+      "quantity": 2
+    }
+  ]
+}
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
+### ▶️ Emitir NF-e com geração de XML
 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+`POST /nfe/send`
+
+Retorna um XML simulado da nota com protocolo fictício.
+
+---
+
+## 🔒 Validações implementadas
+
+- ✅ CNPJ do emitente obrigatório
+- ✅ Código do produto obrigatório
+- ✅ CFOP e NCM com comprimento mínimo
+- ✅ Quantidade dos itens deve ser ≥ 1
+- ✅ Operações interestaduais detectadas automaticamente via UF do destinatário
+- ✅ Geração de XML estruturado com dados de nota, tributos e protocolo simulado
+
+---
+
+## 🐞 Debug da aplicação
+
+Para executar com suporte a depuração remota (porta 5005):
+
+```bash
+./mvnw quarkus:dev -Ddebug
 ```
 
-You can then execute your native executable with: `./target/com.seuprojeto.nfe.nfe-simulation-1.0.0-SNAPSHOT-runner`
+Ou apenas:
 
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
+```bash
+quarkus dev
+```
 
-## Related Guides
+Conecte sua IDE à porta `5005` (modo *Remote Debug*).
 
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- JDBC Driver - H2 ([guide](https://quarkus.io/guides/datasource)): Connect to the H2 database via JDBC
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Hibernate Validator ([guide](https://quarkus.io/guides/validation)): Validate object properties (field, getter) and method parameters for your beans (REST, CDI, Jakarta Persistence)
-- Swagger UI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Swagger UI
+---
+
+## 🧪 Executar os testes
+
+```bash
+./mvnw test
+```
+
+---
+
+## 🗃 Banco de dados
+
+O projeto utiliza **H2 em memória**. Durante o desenvolvimento, você pode visualizar o console via:
+
+🔗 **http://localhost:8080/q/dev**
+
+---
+
+## 📁 Organização do projeto
+
+```
+src/
+├── main/
+│   ├── java/
+│   │   └── com.seuprojeto.nfe/
+│   │       ├── domain/      → Entidades (JPA)
+│   │       ├── dto/         → DTOs de entrada
+│   │       ├── service/     → Lógica de negócios
+│   │       ├── resource/    → Endpoints REST
+│   │       ├── repository/  → Repositórios com Panache
+│   │       └── util/        → Geradores de XML e helpers
+│   └── resources/
+│       └── application.properties
+```
+
+---
+
+## 🧩 Considerações Finais
+
+Este projeto tem fins didáticos e de prototipagem. Não representa a complexidade completa de uma NF-e real.
+
+---
+
+## 📄 Licença
+
+Uso livre para fins de estudo, testes ou internos.
+
+---
