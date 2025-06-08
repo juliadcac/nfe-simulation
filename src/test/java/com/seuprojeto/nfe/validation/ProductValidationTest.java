@@ -1,6 +1,5 @@
 package com.seuprojeto.nfe.validation;
 
-import com.seuprojeto.nfe.domain.Product;
 import com.seuprojeto.nfe.dto.ProductDTO;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;

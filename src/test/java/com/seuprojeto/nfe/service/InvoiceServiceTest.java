@@ -5,13 +5,11 @@ import com.seuprojeto.nfe.domain.Product;
 import com.seuprojeto.nfe.dto.InvoiceDTO;
 import com.seuprojeto.nfe.repository.EmitterRepository;
 import com.seuprojeto.nfe.repository.ProductRepository;
-import io.quarkus.test.TestTransaction;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.BadRequestException;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -28,9 +26,6 @@ public class InvoiceServiceTest {
 
     @Inject
     ProductRepository productRepository;
-
-    Emitter emitter;
-    Product product;
 
     @Test
     void mustEmitValidInvoice() {

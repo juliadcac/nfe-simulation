@@ -15,12 +15,17 @@ public class EmitterRepository implements PanacheRepository<Emitter> {
     }
 
     public Emitter save(EmitterDTO dto){
+        Emitter emitter = generateEmitterEntity(dto);
+        emitter.persist();
+        return emitter;
+    }
+
+    private static Emitter generateEmitterEntity(EmitterDTO dto) {
         Emitter emitter = new Emitter();
-        emitter.cnpj = dto.cnpj; //validar digito verificador?
+        emitter.cnpj = dto.cnpj;
         emitter.companyName = dto.companyName;
         emitter.ie = dto.ie;
         emitter.uf = dto.uf;
-        emitter.persist();
         return emitter;
     }
 }

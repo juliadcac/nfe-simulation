@@ -22,6 +22,8 @@ import java.util.List;
 @ApplicationScoped
 public class InvoiceService {
 
+    public static final String PREFIX_PROTOCOL = "PROTOCOLO-";
+
     @Inject
     EmitterRepository emitterRepository;
 
@@ -35,14 +37,14 @@ public class InvoiceService {
 
     public String emitInvoice(InvoiceDTO dto) {
         Invoice invoice = processInvoiceData(dto);
-        String protocolo = "PROTOCOLO-" + System.currentTimeMillis();
+        String protocol = PREFIX_PROTOCOL + System.currentTimeMillis();
 
         return InvoiceXmlGenerator.generateXml(
                 dto,
                 invoice.productsTotal.doubleValue(),
                 invoice.icms.doubleValue(),
                 invoice.invoiceTotal.doubleValue(),
-                protocolo
+                protocol
         );
 
     }
@@ -54,11 +56,11 @@ public class InvoiceService {
             throw new WebApplicationException("CFOP inválido: formato incorreto", 400);
         }
 
-        boolean cfopValido = interestadual
+        boolean cfopValid = interestadual
                 ? cfop.startsWith("6") // CFOPs interestaduais
                 : cfop.startsWith("5"); // CFOPs internos
 
-        if (!cfopValido) {
+        if (!cfopValid) {
             throw new WebApplicationException("CFOP " + cfop + " incompatível com operação " +
                     (interestadual ? "interestadual" : "interna"), 400);
         }

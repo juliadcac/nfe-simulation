@@ -15,13 +15,18 @@ public class ProductRepository implements PanacheRepository<Product> {
     }
 
     public Product save(ProductDTO dto) {
+        Product product = generateProductEntity(dto);
+        product.persist();
+        return product;
+    }
+
+    private static Product generateProductEntity(ProductDTO dto) {
         Product product = new Product();
         product.code = dto.code;
         product.name = dto.name;
         product.ncm = dto.ncm;
         product.cfop = dto.cfop;
         product.unitValue = dto.unitValue;
-        product.persist();
         return product;
     }
 }

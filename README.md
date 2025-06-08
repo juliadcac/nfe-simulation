@@ -28,6 +28,8 @@ cd nfe-simulation
 
 ### 2. Executar em modo desenvolvimento
 
+Para executar o projeto é necessário ter instalado Java 17+, Maven 3.9+ e Quarkus 3.x
+
 ```bash
 ./mvnw quarkus:dev
 ```
@@ -159,8 +161,14 @@ src/
 │   │       ├── resource/    → Endpoints REST
 │   │       ├── repository/  → Repositórios com Panache
 │   │       └── util/        → Geradores de XML
+│   │       └── validation/  → Bean validations
 │   └── resources/
 │       └── application.properties
+├── test/
+│   ├── java/
+│   │   └── com.seuprojeto.nfe/
+│   │       ├── service/     → Testes unitários dos Services
+│   │       ├── validation/  → Teste de validação de entidades
 ```
 
 ---
