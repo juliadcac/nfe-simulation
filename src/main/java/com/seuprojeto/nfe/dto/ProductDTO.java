@@ -29,5 +29,43 @@ public class ProductDTO {
     @DecimalMin(value = "0.01", message = "O valor deve ser maior que zero")
     public BigDecimal unitValue;
 
+    public String getCode() {
+        return code;
+    }
 
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getNcm() {
+        return ncm;
+    }
+
+    public void setNcm(String ncm) {
+        this.ncm = ncm;
+    }
+
+    public String getCfop() {
+        return cfop;
+    }
+
+    public void setCfop(String cfop) {
+        this.cfop = cfop;
+    }
+
+    public BigDecimal getUnitValue() {
+        return unitValue;
+    }
+
+    public void setUnitValue(BigDecimal unitValue) {
+        this.unitValue = unitValue;
+    }
 }

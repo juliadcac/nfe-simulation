@@ -32,7 +32,7 @@ cd nfe-simulation
 ./mvnw quarkus:dev
 ```
 
-O Quarkus iniciará a aplicação com *hot reload* disponível em:  
+O Quarkus iniciará a aplicação em:  
 📍 `http://localhost:8080`
 
 ---
@@ -42,8 +42,6 @@ O Quarkus iniciará a aplicação com *hot reload* disponível em:
 Você pode visualizar e testar todos os endpoints da API através da interface Swagger:
 
 🔗 **http://localhost:8080/swagger-ui**
-
-Se a tela mostrar erro 404 no topo, é apenas da tentativa de carregar uma especificação OpenAPI externa. Isso não afeta o uso da interface.
 
 ---
 
@@ -105,8 +103,8 @@ Retorna um XML simulado da nota com protocolo fictício.
 
 ## 🔒 Validações implementadas
 
-- ✅ CNPJ do emitente obrigatório
-- ✅ Código do produto obrigatório
+- ✅ CNPJ do emitente único e obrigatório
+- ✅ Código do produto único e obrigatório
 - ✅ CFOP e NCM com comprimento mínimo
 - ✅ Quantidade dos itens deve ser ≥ 1
 - ✅ Operações interestaduais detectadas automaticamente via UF do destinatário
@@ -160,7 +158,7 @@ src/
 │   │       ├── service/     → Lógica de negócios
 │   │       ├── resource/    → Endpoints REST
 │   │       ├── repository/  → Repositórios com Panache
-│   │       └── util/        → Geradores de XML e helpers
+│   │       └── util/        → Geradores de XML
 │   └── resources/
 │       └── application.properties
 ```

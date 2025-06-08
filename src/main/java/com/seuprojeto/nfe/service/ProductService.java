@@ -2,21 +2,28 @@ package com.seuprojeto.nfe.service;
 
 import com.seuprojeto.nfe.domain.Product;
 import com.seuprojeto.nfe.dto.ProductDTO;
+import com.seuprojeto.nfe.repository.ProductRepository;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.ws.rs.WebApplicationException;
+
+import java.util.Optional;
 
 @ApplicationScoped
 public class ProductService {
 
+    @Inject
+    ProductRepository productRepository;
+
     @Transactional
     public Product save(ProductDTO dto) {
-        Product product = new Product();
-        product.code = dto.code;
-        product.name = dto.name;
-        product.ncm = dto.ncm;
-        product.cfop = dto.cfop;
-        product.unitValue = dto.unitValue;
-        product.persist();
-        return product;
+        Optional<Product> product = productRepository.findByCode(dto.getCode());
+
+        if(product.isPresent()){
+            throw new WebApplicationException("Código de produto já cadastrado", 409);
+        }
+
+        return productRepository.save(dto);
     }
 }

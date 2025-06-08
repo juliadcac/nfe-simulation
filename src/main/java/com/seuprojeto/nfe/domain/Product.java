@@ -1,6 +1,7 @@
 package com.seuprojeto.nfe.domain;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -11,6 +12,7 @@ import java.math.BigDecimal;
 public class Product  extends PanacheEntity {
 
     @NotBlank
+    @Column(unique = true, nullable = false)
     public String code;
 
     @NotBlank

@@ -1,6 +1,8 @@
 package com.seuprojeto.nfe.domain;
 
+import com.seuprojeto.nfe.validation.CNPJ;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -9,7 +11,8 @@ import jakarta.validation.constraints.Pattern;
 public class Emitter extends PanacheEntity {
 
     @NotBlank
-    @Pattern(regexp = "\\d{14}", message = "CNPJ deve ter 14 dígitos numéricos")
+    @CNPJ
+    @Column(unique = true, nullable = false)
     public String cnpj;
 
     @NotBlank

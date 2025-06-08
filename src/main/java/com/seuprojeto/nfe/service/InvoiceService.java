@@ -74,22 +74,22 @@ public class InvoiceService {
         BigDecimal totalProdutos = BigDecimal.ZERO;
 
         for (ItemDTO itemDTO : dto.getItems()) {
-            Product produto = productRepository.findByCode(itemDTO.getProductCode())
+            Product product = productRepository.findByCode(itemDTO.getProductCode())
                     .orElseThrow(() -> new WebApplicationException("Produto não encontrado: " + itemDTO.getProductCode(), 404));
 
-            if (!produto.getNcm().matches("\\d{8}")) {
-                throw new WebApplicationException("NCM inválido para produto " + produto.getCode(), 400);
+            if (!product.getNcm().matches("\\d{8}")) {
+                throw new WebApplicationException("NCM inválido para produto " + product.getCode(), 400);
             }
 
-            validateCfop(produto, interstateOperation);
+            validateCfop(product, interstateOperation);
 
-            BigDecimal totalItem = produto.getUnitValue().multiply(BigDecimal.valueOf(itemDTO.getQuantity()));
+            BigDecimal totalItem = product.getUnitValue().multiply(BigDecimal.valueOf(itemDTO.getQuantity()));
             totalProdutos = totalProdutos.add(totalItem);
 
             ItemNota itemNota = new ItemNota();
-            itemNota.productCode = produto.getCode();
-            itemNota.productName = produto.getName();
-            itemNota.unitValue = produto.getUnitValue();
+            itemNota.productCode = product.getCode();
+            itemNota.productName = product.getName();
+            itemNota.unitValue = product.getUnitValue();
             itemNota.quantity = itemDTO.getQuantity();
             itemNota.itemTotal = totalItem;
 
@@ -103,16 +103,16 @@ public class InvoiceService {
         BigDecimal icms = totalProdutos.multiply(new BigDecimal("0.18"));
         BigDecimal invoiceTotal = totalProdutos.add(icms);
 
-        Invoice nota = new Invoice();
-        nota.emitterCNPJ = emitter.getCnpj();
-        nota.recipientCnpjCpf = dto.getRecipientCnpjCpf();
-        nota.recipientName = dto.getRecipientName();
-        nota.recipientUF = dto.getRecipientUF();
-        nota.items = invoiceItems;
-        nota.productsTotal = totalProdutos;
-        nota.icms = icms;
-        nota.invoiceTotal = invoiceTotal;
+        Invoice invoice = new Invoice();
+        invoice.emitterCNPJ = emitter.getCnpj();
+        invoice.recipientCnpjCpf = dto.getRecipientCnpjCpf();
+        invoice.recipientName = dto.getRecipientName();
+        invoice.recipientUF = dto.getRecipientUF();
+        invoice.items = invoiceItems;
+        invoice.productsTotal = totalProdutos;
+        invoice.icms = icms;
+        invoice.invoiceTotal = invoiceTotal;
 
-        return nota;
+        return invoice;
     }
 }
